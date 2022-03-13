@@ -2,8 +2,8 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <h3>Rectangles App</h3>
+    <div className="container">
+      <h2>Rectangles App</h2>
     </div>
   );
 }
