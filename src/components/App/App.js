@@ -13,6 +13,7 @@ export default function App() {
   const [rectangleCount, setRectangleCount] = useState(0);
   const [countIsValid, setCountIsValid] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isContained, setIsContained] = useState(false);
 
   const onAddRectangle = () => {
     if (rectangleCount === 2) {
@@ -52,6 +53,12 @@ export default function App() {
             return;
         }
         obj.set('opacity' ,options.target.intersectsWithObject(obj) ? 0.5 : 1);
+        setIsContained(options.target.isContainedWithinObject(obj));
+        if (options.target.isContainedWithinObject(obj)) {
+          console.log('selected object is contained with another');
+        } else {
+          console.log('selected object is not contained with another');
+        }
         setIsIntersecting(options.target.intersectsWithObject(obj));
         if (options.target.intersectsWithObject(obj)) {
           console.log('selected object is intersecting with another');
@@ -94,7 +101,11 @@ export default function App() {
         </Tooltip>
       </Stack>
       <FabricJSCanvas className="sample-canvas" onReady={onReady} />
-      {countIsValid === true ? <p>The selected rectangle is {isIntersecting !== true ? 'not' : ''} intersecting with another rectangle.</p> : ""}
+      {
+      countIsValid === true ? 
+      <p>The selected rectangle is {isIntersecting !== true ? 'not' : ''} intersecting the other rectangle.<br/>The selected rectangle is {isContained !== true ? 'not' : ''} contained within the other rectangle.</p> 
+      : ""
+      }
     </div>
   );
 }
