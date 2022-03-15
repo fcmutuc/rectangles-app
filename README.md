@@ -1,4 +1,4 @@
-# Introduction
+# Rectangles App
 
 This is an app that uses Fabric.js and React to implement certain algorithms that
 analyze rectangles and features that exist among rectangles.
