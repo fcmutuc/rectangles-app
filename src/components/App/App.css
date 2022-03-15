@@ -1,24 +1,9 @@
-.container {
-  display: flex;
-  flex-direction: column;
+.App {
+  font-family: sans-serif;
 }
 
-button {
-  font-size: 2em;
-  border: 0;
-  padding: 0;
-  background: none;
-  cursor: pointer;
+.sample-canvas {
+  width: 800px;
+  height: 600px;
+  border: thin solid;
 }
-
-ul {
-  display: flex;
-  padding: 0;
-}
-
-li {
-  margin: 0 20px;
-  list-style: none;
-  padding: 0;
-}
-
