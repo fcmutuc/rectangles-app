@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import Instructions from '../Instructions/Instructions.js';
 import IconButton from '@mui/material/IconButton';
@@ -8,9 +8,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import './App.css';
 
 export default function App() {
-  const { editor, onReady } = useFabricJSEditor();
-
+  const { selectedObjects, editor, onReady } = useFabricJSEditor();
   const [rectangleCount, setRectangleCount] = useState(0);
+  //const [objectIsHighlighted, setObjectIsHighlighted] = useState(false);
 
   const onAddRectangle = () => {
     if (rectangleCount === 2) {
@@ -20,6 +20,14 @@ export default function App() {
     if (rectangleCount >= 0 || rectangleCount < 2) {
       setRectangleCount(rectangleCount + 1);
       editor.addRectangle();
+      console.log('after add');
+      console.log('editor ->');
+      console.log(editor);
+      let allObjects = editor.canvas.getObjects();
+      if (allObjects.length) {
+        let selectedObject = allObjects[editor.canvas.size() - 1];
+        editor.canvas.setActiveObject(selectedObject);
+      }
     }
   };
 
@@ -27,6 +35,18 @@ export default function App() {
     editor.deleteAll();
     setRectangleCount(0);
   };
+
+  useEffect(() => {
+    console.log('in useEffect');
+    if (selectedObjects !== undefined) {
+      console.log('selectedObjects ->');
+      console.log(selectedObjects);
+    }
+    if (editor?.canvas !== undefined) {
+      console.log('editor.canvas.getActiveObjects() ->');
+      console.log(editor.canvas.getActiveObjects());
+    }
+  }, [rectangleCount, editor?.canvas, selectedObjects])
 
   return (
     <div className="App">
