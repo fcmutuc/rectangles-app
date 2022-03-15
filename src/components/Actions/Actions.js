@@ -5,6 +5,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const handleIconClicks = name => () => {
   console.log(name);
+  if (name === 'add') {
+    console.log('need to add a rectangle');
+  } else if (name === 'clear') {
+    console.log('need to clear the canvas');
+  } else {
+    console.warn('can\'t handle: \'' + name + '\'');
+  }
 }
 
 export default function Actions() {
