@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import './App.css';
 
 export default function App() {
-  const { selectedObjects, editor, onReady } = useFabricJSEditor();
+  const { editor, onReady } = useFabricJSEditor();
   const [rectangleCount, setRectangleCount] = useState(0);
   const [countIsValid, setCountIsValid] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -25,9 +25,6 @@ export default function App() {
       setCountIsValid(((rectangleCount + 1) === 2) ? true : false);
       setRectangleCount(rectangleCount + 1);
       editor.addRectangle();
-      console.log('after add');
-      console.log('editor ->');
-      console.log(editor);
       let allObjects = editor.canvas.getObjects();
       if (allObjects.length) {
         let selectedObject = allObjects[editor.canvas.size() - 1];
@@ -53,38 +50,33 @@ export default function App() {
         if (obj === options.target) {
             return;
         }
-        obj.set('opacity' ,options.target.intersectsWithObject(obj) ? 0.5 : 1);
-        setIsAdjacent(false);
+        let otherObjectCoords = obj.getCoords();
+        if (otherObjectCoords.length === 4 && 
+          (
+          options.target.containsPoint(otherObjectCoords[0]) || 
+          options.target.containsPoint(otherObjectCoords[1]) || 
+          options.target.containsPoint(otherObjectCoords[2]) || 
+          options.target.containsPoint(otherObjectCoords[3])
+          )
+          ) {
+            setIsAdjacent(true);
+        } else {
+          setIsAdjacent(false);
+        }
         setIsContained(options.target.isContainedWithinObject(obj));
-        if (options.target.isContainedWithinObject(obj)) {
-          console.log('selected object is contained with another');
-        } else {
-          console.log('selected object is not contained with another');
-        }
         setIsIntersecting(options.target.intersectsWithObject(obj));
-        if (options.target.intersectsWithObject(obj)) {
-          console.log('selected object is intersecting with another');
-        } else {
-          console.log('selected object is not intersecting with another');
-        }
       });
     };
 
     console.log('in useEffect');
-    if (selectedObjects !== undefined) {
-      console.log('selectedObjects ->');
-      console.log(selectedObjects);
-    }
     if (editor?.canvas !== undefined) {
-      console.log('editor.canvas.getActiveObjects() ->');
-      console.log(editor.canvas.getActiveObjects());
       editor.canvas.on({
         'object:moving': determineOutput,
         'object:scaling': determineOutput,
         'object:rotating': determineOutput
       });
     }
-  }, [rectangleCount, editor?.canvas, selectedObjects])
+  }, [editor?.canvas])
 
   return (
     <div className="App">
