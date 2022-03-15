@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FabricJSCanvas, useFabricJSEditor } from "fabricjs-react";
 import Instructions from '../Instructions/Instructions.js';
+import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import CropLandscapeIcon from '@mui/icons-material/CropLandscape';
@@ -10,7 +11,6 @@ import './App.css';
 export default function App() {
   const { selectedObjects, editor, onReady } = useFabricJSEditor();
   const [rectangleCount, setRectangleCount] = useState(0);
-  //const [objectIsHighlighted, setObjectIsHighlighted] = useState(false);
 
   const onAddRectangle = () => {
     if (rectangleCount === 2) {
@@ -37,6 +37,20 @@ export default function App() {
   };
 
   useEffect(() => {
+
+    const printCoordinates = (options) => {
+      console.log('in printCoordinates()');
+      console.log('options ->');
+      console.log(options);
+      options.target.setCoords();
+      editor.canvas.forEachObject(function(obj) {
+        if (obj === options.target) {
+            return;
+        }
+        obj.set('opacity' ,options.target.intersectsWithObject(obj) ? 0.5 : 1);
+      });
+    };
+
     console.log('in useEffect');
     if (selectedObjects !== undefined) {
       console.log('selectedObjects ->');
@@ -45,6 +59,11 @@ export default function App() {
     if (editor?.canvas !== undefined) {
       console.log('editor.canvas.getActiveObjects() ->');
       console.log(editor.canvas.getActiveObjects());
+      editor.canvas.on({
+        'object:moving': printCoordinates,
+        'object:scaling': printCoordinates,
+        'object:rotating': printCoordinates
+      });
     }
   }, [rectangleCount, editor?.canvas, selectedObjects])
 
@@ -53,12 +72,16 @@ export default function App() {
       <h1>Rectangles App</h1>
       <Instructions />
       <Stack direction="row" spacing={1}>
+      <Tooltip title="Add a Rectangle">
         <IconButton name="add-rectangle" aria-label="add a rectangle" onClick={onAddRectangle}>
           <CropLandscapeIcon />
         </IconButton>
+        </Tooltip>
+        <Tooltip title="Clear the Canvas">
         <IconButton name="clear-canvas" aria-label="clear the canvas" onClick={onClearCanvas}>
           <DeleteIcon />
         </IconButton>
+        </Tooltip>
       </Stack>
       <FabricJSCanvas className="sample-canvas" onReady={onReady} />
     </div>
