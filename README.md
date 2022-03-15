@@ -15,6 +15,11 @@ To run the app, you will need the following:
 
 In the project directory, you can run:
 
+### `npm install`
+
+Downloads all the relevant project dependencies to run the app.\
+You may also see any project vulnerabilities that cannot be fixed automatically and will require manual intervention or review.
+
 ### `npm start`
 
 Runs the app in the development mode.\
