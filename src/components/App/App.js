@@ -14,6 +14,7 @@ export default function App() {
   const [countIsValid, setCountIsValid] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [isContained, setIsContained] = useState(false);
+  const [isAdjacent, setIsAdjacent] = useState(false);
 
   const onAddRectangle = () => {
     if (rectangleCount === 2) {
@@ -43,8 +44,8 @@ export default function App() {
 
   useEffect(() => {
 
-    const printCoordinates = (options) => {
-      console.log('in printCoordinates()');
+    const determineOutput = (options) => {
+      console.log('in determineOutput()');
       console.log('options ->');
       console.log(options);
       options.target.setCoords();
@@ -53,6 +54,7 @@ export default function App() {
             return;
         }
         obj.set('opacity' ,options.target.intersectsWithObject(obj) ? 0.5 : 1);
+        setIsAdjacent(false);
         setIsContained(options.target.isContainedWithinObject(obj));
         if (options.target.isContainedWithinObject(obj)) {
           console.log('selected object is contained with another');
@@ -77,9 +79,9 @@ export default function App() {
       console.log('editor.canvas.getActiveObjects() ->');
       console.log(editor.canvas.getActiveObjects());
       editor.canvas.on({
-        'object:moving': printCoordinates,
-        'object:scaling': printCoordinates,
-        'object:rotating': printCoordinates
+        'object:moving': determineOutput,
+        'object:scaling': determineOutput,
+        'object:rotating': determineOutput
       });
     }
   }, [rectangleCount, editor?.canvas, selectedObjects])
@@ -101,9 +103,20 @@ export default function App() {
         </Tooltip>
       </Stack>
       <FabricJSCanvas className="sample-canvas" onReady={onReady} />
+      {countIsValid === true ? <p><b>Output:</b></p> : ""}
       {
       countIsValid === true ? 
-      <p>The selected rectangle is {isIntersecting !== true ? 'not' : ''} intersecting the other rectangle.<br/>The selected rectangle is {isContained !== true ? 'not' : ''} contained within the other rectangle.</p> 
+      <ul>
+        <li>
+        The selected rectangle is {isIntersecting !== true ? 'not' : ''} intersecting the other rectangle.
+        </li>
+        <li>
+        The selected rectangle is {isContained !== true ? 'not' : ''} contained within the other rectangle.
+        </li>
+        <li>
+        The selected rectangle is {isAdjacent !== true ? 'not' : ''} adjacent to the other rectangle.
+        </li>
+      </ul> 
       : ""
       }
     </div>
