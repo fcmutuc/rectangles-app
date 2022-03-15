@@ -11,13 +11,16 @@ import './App.css';
 export default function App() {
   const { selectedObjects, editor, onReady } = useFabricJSEditor();
   const [rectangleCount, setRectangleCount] = useState(0);
+  const [countIsValid, setCountIsValid] = useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(false);
 
   const onAddRectangle = () => {
     if (rectangleCount === 2) {
-      alert('Only 2 Rectangles are currently allowed.');
+      alert('Only two rectangles are currently allowed.');
       return false;
     }
     if (rectangleCount >= 0 || rectangleCount < 2) {
+      setCountIsValid(((rectangleCount + 1) === 2) ? true : false);
       setRectangleCount(rectangleCount + 1);
       editor.addRectangle();
       console.log('after add');
@@ -34,6 +37,7 @@ export default function App() {
   const onClearCanvas = () => {
     editor.deleteAll();
     setRectangleCount(0);
+    setCountIsValid(0);
   };
 
   useEffect(() => {
@@ -48,6 +52,12 @@ export default function App() {
             return;
         }
         obj.set('opacity' ,options.target.intersectsWithObject(obj) ? 0.5 : 1);
+        setIsIntersecting(options.target.intersectsWithObject(obj));
+        if (options.target.intersectsWithObject(obj)) {
+          console.log('selected object is intersecting with another');
+        } else {
+          console.log('selected object is not intersecting with another');
+        }
       });
     };
 
@@ -84,6 +94,7 @@ export default function App() {
         </Tooltip>
       </Stack>
       <FabricJSCanvas className="sample-canvas" onReady={onReady} />
+      {countIsValid === true ? <p>The selected rectangle is {isIntersecting !== true ? 'not' : ''} intersecting with another rectangle.</p> : ""}
     </div>
   );
 }
