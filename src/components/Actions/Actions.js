@@ -9,7 +9,7 @@ const handleIconClicks = name => () => {
 
 export default function Actions() {
   return (
-    <Stack className="icons" direction="row" spacing={1}>
+    <Stack direction="row" spacing={1}>
       <IconButton name="add-rectangle" aria-label="add a rectangle" onClick={handleIconClicks('add')}>
         <CropLandscapeIcon />
       </IconButton>
