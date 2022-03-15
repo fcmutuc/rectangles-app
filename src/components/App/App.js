@@ -37,14 +37,14 @@ export default function App() {
     editor.deleteAll();
     setRectangleCount(0);
     setCountIsValid(0);
+    setIsIntersecting(false);
+    setIsContained(false);
+    setIsAdjacent(false);
   };
 
   useEffect(() => {
 
     const determineOutput = (options) => {
-      console.log('in determineOutput()');
-      console.log('options ->');
-      console.log(options);
       options.target.setCoords();
       editor.canvas.forEachObject(function(obj) {
         if (obj === options.target) {
@@ -68,9 +68,11 @@ export default function App() {
       });
     };
 
-    console.log('in useEffect');
     if (editor?.canvas !== undefined) {
       editor.canvas.on({
+        'selection:updated': determineOutput,
+        'object:added': determineOutput,
+        'object:modified': determineOutput,
         'object:moving': determineOutput,
         'object:scaling': determineOutput,
         'object:rotating': determineOutput
