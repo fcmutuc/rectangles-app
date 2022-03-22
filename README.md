@@ -3,6 +3,14 @@
 This is an app that uses Fabric.js and React to implement certain algorithms that
 analyze rectangles and features that exist among rectangles.
 
+When there are two rectangles on the drawing canvas, you can see if the following:
+
+* the two rectangles intersect (intersection)
+* one of the rectangles is wholly contained within another rectangle (containment)
+* the two rectangles are adjacent (adjacency)
+
+**Note: Currently, this app supports rendering at most two rectangles on the drawing canvas.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Prerequisites
