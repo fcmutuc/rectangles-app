@@ -9,7 +9,7 @@ When there are two rectangles on the drawing canvas, you can see if the followin
 * one of the rectangles is wholly contained within another rectangle (containment)
 * the two rectangles are adjacent (adjacency)
 
-**Note: Currently, this app supports rendering at most two rectangles on the drawing canvas.
+**Note: Currently, this app only supports rendering at most two rectangles on the drawing canvas.**
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
